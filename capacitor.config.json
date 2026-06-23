@@ -1,0 +1,9 @@
+{
+  "appId": "com.codestudy.pro1010",
+  "appName": "CodeStudy Pro 10",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}

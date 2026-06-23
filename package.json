@@ -1,0 +1,14 @@
+{
+  "name": "codestudy-pro-10-10",
+  "version": "3.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node -e \"console.log('Static app ready')\""
+  },
+  "dependencies": {
+    "@capacitor/android": "7.4.3",
+    "@capacitor/cli": "7.4.3",
+    "@capacitor/core": "7.4.3"
+  },
+  "devDependencies": {}
+}
