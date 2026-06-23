@@ -1,0 +1,59 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Validar app web
+        run: |
+          test -f www/index.html
+          grep -q "CodeStudy Pro 10/10" www/index.html
+          echo "App web OK"
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Criar Android limpo
+        run: |
+          rm -rf android
+          npx cap add android
+
+      - name: Sincronizar Android
+        run: npx cap sync android
+
+      - name: Garantir index dentro do APK
+        run: |
+          test -f android/app/src/main/assets/public/index.html
+          grep -q "CodeStudy Pro 10/10" android/app/src/main/assets/public/index.html
+          ls -lh android/app/src/main/assets/public/index.html
+
+      - name: Gerar APK debug
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+
+      - name: Enviar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: CodeStudy-Pro-10-APK
+          path: android/app/build/outputs/apk/debug/*.apk
